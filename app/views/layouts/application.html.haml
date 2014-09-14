@@ -1,0 +1,28 @@
+!!!
+%html
+  %head
+    %title Proengvid
+    = stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track' => true
+    = javascript_include_tag 'application', 'data-turbolinks-track' => true
+    = csrf_meta_tags
+  %body
+    .container
+      .row.clearfix
+        .col-md-12.column
+          %nav.navbar.navbar-default{:role => "navigation"}
+            .navbar-header
+              %button.navbar-toggle{"data-target" => "#bs-example-navbar-collapse-1", "data-toggle" => "collapse", :type => "button"}
+                %span.sr-only Toggle navigation
+                %span.icon-bar
+                %span.icon-bar
+                %span.icon-bar
+              = link_to 'Pro engvid.com', root_path, class: 'navbar-brand'
+            #bs-example-navbar-collapse-1.collapse.navbar-collapse
+              %ul.nav.navbar-nav
+                %li{class: controller_name == 'lessons' ? 'active' : ''}
+                  = link_to 'Lessons', lessons_path
+              %ul.nav.navbar-nav.navbar-right
+                - if current_user.present?
+                  %li
+                    = link_to current_user.email, '#'
+          = yield
