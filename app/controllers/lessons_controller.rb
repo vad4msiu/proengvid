@@ -10,9 +10,9 @@ class LessonsController < ApplicationController
     @current_categories_in = params.fetch(:q, {}).fetch(:categories_in, DEFAULT_CURRENT_CATEGORIES_IN)
     @with_watched = params.fetch(:q, {}).fetch(:with_watched, DEFAULT_WITH_WATCHED)
     @lessons = Lesson.categories_in(@current_categories_in)
+    @watched_lessons = current_user.watched_lessons
     unless @with_watched
-      watched_lessons = current_user.watched_lessons
-      @lessons = @lessons.where.not(id: watched_lessons.pluck(:id))
+      @lessons = @lessons.where.not(id: @watched_lessons.pluck(:id))
     end
     @categories = Lesson.pluck(:categories).flatten.uniq
   end

@@ -10,12 +10,42 @@
             = check_box_tag 'q[categories_in][]', category, checked
             = category
   .clearfix
-  .form-group
-    = label_tag 'With watched'
-    = check_box_tag 'q[with_watched]', '1', @with_watched
+  / .form-group
+  /   = label_tag 'With watched'
+  /   = check_box_tag 'q[with_watched]', '1', @with_watched
 
   = submit_tag 'Search', class: 'btn btn-default'
+
 %hr
+%h4 Last watched
+%table.table
+  %thead
+    %tr
+      %th
+        Name
+      %th
+        Teacher
+      %th
+        Categories
+      %th
+        State
+      %th
+        Actions
+  %tbody
+    - @watched_lessons.limit(5).each do |lesson|
+      - state = current_user.watched_lessons.include?(lesson) ? 'watched' : 'unwatched'
+      %tr
+        %td= lesson.name
+        %td= lesson.teacher
+        %td= lesson.categories.join(', ')
+        %td= state
+        %td
+          - if state == 'unwatched'
+            = link_to 'watch', watch_lesson_path(lesson), method: 'post', target: "_blank"
+          - else
+            = link_to 'watch', lesson.link, target: "_blank"
+
+%h4 Unwatched
 %table.table
   %thead
     %tr
